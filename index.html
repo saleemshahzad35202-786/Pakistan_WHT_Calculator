@@ -968,7 +968,7 @@
 
     <div class="hero-stats">
       <div class="hero-stat">
-        <span class="hero-stat-num">4</span>
+        <span class="hero-stat-num">12</span>
         <span class="hero-stat-label">Payment Types</span>
       </div>
       <div class="hero-stat">
@@ -1067,6 +1067,14 @@
             <span class="cat-tab-icon">🚢</span>
             Imports
           </button>
+          <button class="cat-tab" role="tab" aria-selected="false" data-cat="exports" onclick="setCategory('exports',this)">
+            <span class="cat-tab-icon">🚢</span>
+            Exports
+          </button>
+          <button class="cat-tab" role="tab" aria-selected="false" data-cat="non_resident" onclick="setCategory('non_resident',this)">
+            <span class="cat-tab-icon">🌐</span>
+            Non-Resident
+          </button>
           <button class="cat-tab" role="tab" aria-selected="false" data-cat="other" onclick="setCategory('other',this)">
             <span class="cat-tab-icon">⚡</span>
             Other
@@ -1090,10 +1098,9 @@
               <select class="form-select" id="goods-type">
                 <option value="other_company">Any other goods — Company (non-toll)</option>
                 <option value="other_individual">Any other goods — Individual / AOP</option>
-                <option value="edible_oil_ind">Rice / Edible Oil / Cotton Seed — Individual / AOP</option>
-                <option value="edible_oil_co">Rice / Edible Oil / Cotton Seed — Company</option>
-                <option value="gold_ind">Gold / Silver — Individual / AOP</option>
-                <option value="gold_co">Gold / Silver — Company</option>
+                <option value="edible_oil">Rice / Cotton Seed / Edible Oils</option>
+                <option value="toll_co">Toll Manufacturing — Company</option>
+                <option value="toll_ind">Toll Manufacturing — Individual / AOP</option>
                 <option value="fmcg">FMCG Distributor (ATL)</option>
               </select>
             </div>
@@ -1107,23 +1114,12 @@
           <div id="fields-services" style="display:none;">
             <div class="form-group" style="margin-bottom:var(--space-4)">
               <label class="form-label" for="services-type">Service Type<span class="required">*</span></label>
-              <select class="form-select" id="services-type" onchange="updateServicesEntityVisibility()">
-                <option value="it_services">IT / IT-enabled services</option>
-                <option value="transport">Transport / Freight / Courier / Hotel / Security / Manpower</option>
-                <option value="oil_tanker">Oil Tanker Contractor</option>
-                <option value="advertising">Electronic & Print Media Advertising</option>
-                <option value="other_company">Other services — Company</option>
-                <option value="other_individual">Other services — Individual / AOP</option>
+              <select class="form-select" id="services-type">
+                <option value="it_services">IT / IT-enabled services — Sec 153(1)(b)</option>
+                <option value="transport">Transport / Freight / Courier / Hotel / Security / Manpower — Sec 153(1)(b)</option>
+                <option value="advertising">Electronic &amp; Print Media Advertising — Sec 153(1)(b)</option>
+                <option value="other_services">Other Services — Sec 153(1)(b)</option>
               </select>
-            </div>
-            <!-- Entity selector — shown only for service types that have different Ind/Co rates -->
-            <div class="form-group" style="margin-bottom:var(--space-4)" id="services-entity-group">
-              <label class="form-label" for="services-entity">Payee Entity Type<span class="required">*</span></label>
-              <select class="form-select" id="services-entity">
-                <option value="individual">Individual / AOP</option>
-                <option value="company">Company</option>
-              </select>
-              <span class="form-hint">IT, Transport and Oil Tanker rates differ for Company vs Individual payees</span>
             </div>
             <div class="form-group">
               <label class="form-label" for="services-amount">Gross Payment Amount (Rs.)<span class="required">*</span></label>
@@ -1168,9 +1164,11 @@
             <div class="form-group" style="margin-bottom:var(--space-4)">
               <label class="form-label" for="dividend-type">Dividend Type<span class="required">*</span></label>
               <select class="form-select" id="dividend-type">
-                <option value="general">Any other case (General)</option>
-                <option value="ipp">Independent Power Producer (IPP)</option>
-                <option value="reit">REIT / Real Estate Investment Trust</option>
+                <option value="general">General / REIT — Sec 150</option>
+                <option value="ipp">Independent Power Producer (IPP) — Sec 150</option>
+                <option value="mutual_fund_debt">Mutual Fund (≥50% income from debt) — Sec 150</option>
+                <option value="company_no_tax">Company (no tax due to exemption/losses) — Sec 150</option>
+                <option value="spv_others">SPV Dividend — received by others — Sec 150</option>
               </select>
             </div>
             <div class="form-group">
@@ -1184,19 +1182,16 @@
             <div class="form-group" style="margin-bottom:var(--space-4)">
               <label class="form-label" for="interest-type">Instrument Type<span class="required">*</span></label>
               <select class="form-select" id="interest-type">
-                <option value="bank_deposit">Bank Deposit / Account</option>
-                <option value="nss">National Savings Scheme / Post Office</option>
-                <option value="govt_security">Government Securities / T-Bills</option>
-                <option value="other_debt">Other Bonds / Debentures</option>
+                <option value="bank_deposit">Bank Deposit / Account — Sec 151</option>
+                <option value="govt_security">Govt Securities / T-Bills (non-individual) — Sec 151</option>
+                <option value="nss">NSS / Post Office / Other Profit on Debt — Sec 151</option>
+                <option value="sukuk_co">Sukuk — Company — Sec 151</option>
+                <option value="sukuk_ind_high">Sukuk — Ind/AOP (return &gt; Rs.1M) — Sec 151</option>
+                <option value="sukuk_ind_low">Sukuk — Ind/AOP (return ≤ Rs.1M) — Sec 151</option>
+                <option value="securities_gain">Gain on Debt Securities — Sec 151A</option>
               </select>
             </div>
-            <div class="form-group" style="margin-bottom:var(--space-4)">
-              <label class="form-label" for="interest-entity">Recipient Type<span class="required">*</span></label>
-              <select class="form-select" id="interest-entity">
-                <option value="individual">Individual / AOP</option>
-                <option value="company">Company</option>
-              </select>
-            </div>
+
             <div class="form-group">
               <label class="form-label" for="interest-amount">Profit / Return Amount (Rs.)<span class="required">*</span></label>
               <input class="form-input" type="number" id="interest-amount" placeholder="e.g. 150000" min="0" step="1">
@@ -1246,19 +1241,85 @@
             <div class="form-group" style="margin-bottom:var(--space-4)">
               <label class="form-label" for="other-type">Section / Type<span class="required">*</span></label>
               <select class="form-select" id="other-type">
-                <option value="cash_withdrawal">Sec 231AB — Cash Withdrawal (above Rs. 50K/day)</option>
-                <option value="brokerage">Sec 233 — Brokerage / Commission (General)</option>
-                <option value="brokerage_ins">Sec 233 — Life Insurance Commission</option>
-                <option value="brokerage_adv">Sec 233 — Advertising Agent Commission</option>
-                <option value="prize_bond">Sec 156 — Prize Bond / Crossword</option>
-                <option value="prize_lottery">Sec 156 — Raffle / Lottery / Sales Promo</option>
-                <option value="export">Sec 154 — Exports (realization of foreign exchange)</option>
-                <option value="electricity_comm">Sec 235 — Electricity Bill (Commercial &gt; Rs. 20K)</option>
+                <optgroup label="Exports">
+                  <option value="export">Sec 154 — Export Foreign Exchange Proceeds</option>
+                  <option value="export_it_pseb">Sec 154A — IT/SW Export (PSEB Registered)</option>
+                  <option value="export_other">Sec 154A — Other Export Services</option>
+                </optgroup>
+                <optgroup label="Brokerage &amp; Commission">
+                  <option value="brokerage">Sec 233 — Brokerage / Commission (General)</option>
+                  <option value="brokerage_ins">Sec 233 — Life Insurance Commission</option>
+                  <option value="brokerage_adv">Sec 233 — Advertising Agent Commission</option>
+                </optgroup>
+                <optgroup label="Prizes &amp; Petroleum">
+                  <option value="prize_bond">Sec 156 — Prize Bond / Crossword</option>
+                  <option value="prize_lottery">Sec 156 — Raffle / Lottery / Sales Promo</option>
+                  <option value="petroleum">Sec 156A — Petroleum Products Sale</option>
+                </optgroup>
+                <optgroup label="Telephone &amp; Utilities">
+                  <option value="electricity_comm">Sec 235 — Electricity Bill (Commercial/Industrial)</option>
+                  <option value="telephone_mobile">Sec 236 — Mobile Phone / Prepaid Internet</option>
+                  <option value="telephone_landline">Sec 236 — Landline Bill (&gt; Rs. 1,000)</option>
+                </optgroup>
+                <optgroup label="Advance Taxes">
+                  <option value="cash_withdrawal">Sec 231AB — Cash Withdrawal (&gt; Rs. 50K/day)</option>
+                  <option value="public_auction">Sec 236A — Public Auction (Non-Property)</option>
+                  <option value="auction_property">Sec 236A — Public Auction (Immovable Property)</option>
+                  <option value="functions">Sec 236CB — Functions &amp; Gatherings</option>
+                  <option value="remittance">Sec 236Y — Amount Remitted Abroad (Card)</option>
+                  <option value="bonus_shares">Sec 236Z — Bonus Shares Issued</option>
+                </optgroup>
+                <optgroup label="Distributor / Retailer">
+                  <option value="dist_fertilizer">Sec 236G — Sales to Distributor (Fertilizers)</option>
+                  <option value="dist_other">Sec 236G — Sales to Distributor (Other)</option>
+                  <option value="retailer">Sec 236H — Sales to Retailers</option>
+                </optgroup>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="other-amount">Amount (Rs.)<span class="required">*</span></label>
               <input class="form-input" type="number" id="other-amount" placeholder="e.g. 100000" min="0" step="1">
+            </div>
+          </div>
+
+          <!-- Exports fields - Sec 154 / 154A -->
+          <div id="fields-exports" style="display:none;">
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label" for="exports-type">Export Type<span class="required">*</span></label>
+              <select class="form-select" id="exports-type">
+                <option value="export_fx">Sec 154 — Foreign Exchange Proceeds (Sub-sec 1 &amp; 3)</option>
+                <option value="export_it_pseb">Sec 154A — IT/SW Services (PSEB Registered)</option>
+                <option value="export_other">Sec 154A — Other Export Services</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="exports-amount">Export Proceeds / Amount (Rs.)<span class="required">*</span></label>
+              <input class="form-input" type="number" id="exports-amount" placeholder="e.g. 1000000" min="0" step="1">
+              <span class="form-hint">Sec 154 / 154A are Final Tax — filer status does not change the rate</span>
+            </div>
+          </div>
+
+          <!-- Non-Resident fields - Sec 152 -->
+          <div id="fields-non_resident" style="display:none;">
+            <div class="form-group" style="margin-bottom:var(--space-4)">
+              <label class="form-label" for="nr-type">Payment Category<span class="required">*</span></label>
+              <select class="form-select" id="nr-type">
+                <option value="royalty">Sec 152(1) — Royalty / Fee for Technical Services</option>
+                <option value="mgmt_fee">Sec 152(1A) — Management Fee</option>
+                <option value="insurance">Sec 152(1AA) — Insurance / Reinsurance Premium</option>
+                <option value="nr_advertising">Sec 152(1AAA) — Advertisement Services</option>
+                <option value="nr_goods_co">Sec 152(2A)(a) — Goods (Company)</option>
+                <option value="nr_goods_ind">Sec 152(2A)(a) — Goods (Individual/AOP)</option>
+                <option value="nr_it">Sec 152(2A)(b) — IT / IT-enabled Services</option>
+                <option value="nr_services">Sec 152(2A)(b) — Other Services</option>
+                <option value="nr_contract_sports">Sec 152(2A)(c) — Contract (Sports Person)</option>
+                <option value="nr_contract_other">Sec 152(2A)(c) — Contract (Other)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="nr-amount">Gross Payment Amount (Rs.)<span class="required">*</span></label>
+              <input class="form-input" type="number" id="nr-amount" placeholder="e.g. 500000" min="0" step="1">
+              <span class="form-hint">Sec 152(1), (1A), (1AA), (1AAA) apply same rate regardless of filer status</span>
             </div>
           </div>
 
@@ -1779,7 +1840,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 /* ── CATEGORY SWITCHER ────────────────────────────────── */
 let currentCat = 'salary';
-const ALL_CATS = ['salary','goods','services','contract','rent','dividend','interest','property','imports','other'];
+const ALL_CATS = ['salary','goods','services','contract','rent','dividend','interest','property','imports','exports','non_resident','other'];
 function setCategory(cat, btn) {
   document.querySelectorAll('.cat-tab').forEach(b=>{ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
   btn.classList.add('active'); btn.setAttribute('aria-selected','true');
@@ -1794,16 +1855,7 @@ function setCategory(cat, btn) {
   resetResult();
 }
 
-/* ── SERVICES ENTITY VISIBILITY ──────────────────────── */
-// Show/hide the payee entity selector based on service type selection
-function updateServicesEntityVisibility() {
-  const ENTITY_AWARE = ['it_services', 'transport', 'oil_tanker'];
-  const servType = document.getElementById('services-type').value;
-  const entityGroup = document.getElementById('services-entity-group');
-  if (entityGroup) {
-    entityGroup.style.display = ENTITY_AWARE.includes(servType) ? 'block' : 'none';
-  }
-}
+/* Entity selector removed — FBR shows no entity split for services */
 
 /* ── RATE TABLES ──────────────────────────────────────── */
 function showRateTab(tab, btn) {
@@ -1813,9 +1865,12 @@ function showRateTab(tab, btn) {
   document.getElementById('rtab-'+tab).classList.add('active');
 }
 
-/* ── FBR RATE DATA — TY2026 (Finance Act 2025) ──────── */
+/* ── FBR RATE DATA — TY2026 (Finance Act 2025) ──────────
+   Source: FBR WHT Rate Card official download, Finance Act 2025
+   Reconciled and verified against FBR.gov.pk data
+──────────────────────────────────────────────────────── */
 const RATES = {
-  // Sec 149 — Salary (slabs handled specially)
+  // Sec 149 — Salary (progressive slabs)
   salary: { slabs: [
     { min: 0,       max: 600000,    base: 0,      marginal: 0.00,  on: 0 },
     { min: 600001,  max: 1200000,   base: 0,      marginal: 0.01,  on: 600000 },
@@ -1824,79 +1879,115 @@ const RATES = {
     { min: 3200001, max: 4100000,   base: 346000, marginal: 0.30,  on: 3200000 },
     { min: 4100001, max: Infinity,  base: 616000, marginal: 0.35,  on: 4100000 }
   ]},
-  // Sec 153(1)(a) — Goods
+  // Sec 153(1)(a) — Goods (FBR: no entity split for edible oil/rice)
   goods: {
-    other_company:    { filer: 0.05,   non_filer: 0.10,   section: 'Sec 153(1)(a) — Any other goods (Company)',              status: 'Minimum Tax' },
-    other_individual: { filer: 0.055,  non_filer: 0.11,   section: 'Sec 153(1)(a) — Any other goods (Ind/AOP)',             status: 'Minimum Tax' },
-    edible_oil_ind:   { filer: 0.015,  non_filer: 0.03,   section: 'Sec 153(1)(a) — Rice/Edible Oil/Cotton Seed (Ind/AOP)', status: 'Minimum Tax' },
-    edible_oil_co:    { filer: 0.03,   non_filer: 0.06,   section: 'Sec 153(1)(a) — Rice/Edible Oil/Cotton Seed (Company)', status: 'Minimum Tax' },
-    gold_ind:         { filer: 0.01,   non_filer: 0.02,   section: 'Sec 153(1)(a) — Gold/Silver (Ind/AOP)',                 status: 'Adjustable' },
-    gold_co:          { filer: 0.02,   non_filer: 0.04,   section: 'Sec 153(1)(a) — Gold/Silver (Company)',                 status: 'Adjustable' },
-    fmcg:             { filer: 0.0025, non_filer: 0.005,  section: 'Sec 153(1)(a) — FMCG Distributor (ATL)',                status: 'Minimum Tax' }
+    other_company:    { filer: 0.050,  non_filer: 0.100,  section: 'Sec 153(1)(a) — Any other goods (Company)',         status: 'Minimum Tax' },
+    other_individual: { filer: 0.055,  non_filer: 0.110,  section: 'Sec 153(1)(a) — Any other goods (Ind/AOP)',        status: 'Minimum Tax' },
+    edible_oil:       { filer: 0.015,  non_filer: 0.030,  section: 'Sec 153(1)(a) — Rice/Cotton Seed/Edible Oils',     status: 'Minimum Tax' },
+    toll_co:          { filer: 0.090,  non_filer: 0.180,  section: 'Sec 153(1)(a) — Toll Manufacturing (Company)',     status: 'Minimum Tax' },
+    toll_ind:         { filer: 0.110,  non_filer: 0.220,  section: 'Sec 153(1)(a) — Toll Manufacturing (Ind/AOP)',     status: 'Minimum Tax' },
+    fmcg:             { filer: 0.0025, non_filer: 0.005,  section: 'Sec 153(1)(a) — FMCG Distributor (ATL)',           status: 'Minimum Tax' }
   },
-  // Sec 153(1)(b) — Services
-  // NOTE: it_services, transport, oil_tanker have separate rates for Company vs Individual/AOP.
-  // The calculate() function selects the correct key based on the services-entity selector.
+  // Sec 153(1)(b) — Services (FBR: single rate, no entity split)
   services: {
-    it_services_ind:  { filer: 0.04,  non_filer: 0.08,  section: 'Sec 153(1)(b) — IT / IT-enabled Services (Ind/AOP)',        status: 'Minimum Tax' },
-    it_services_co:   { filer: 0.08,  non_filer: 0.16,  section: 'Sec 153(1)(b) — IT / IT-enabled Services (Company)',        status: 'Minimum Tax' },
-    transport_ind:    { filer: 0.06,  non_filer: 0.12,  section: 'Sec 153(1)(b) — Transport/Freight/Courier/Hotel (Ind/AOP)', status: 'Minimum Tax' },
-    transport_co:     { filer: 0.12,  non_filer: 0.24,  section: 'Sec 153(1)(b) — Transport/Freight/Courier/Hotel (Company)', status: 'Minimum Tax' },
-    oil_tanker_ind:   { filer: 0.02,  non_filer: 0.04,  section: 'Sec 153(1)(b) — Oil Tanker Contractor (Ind/AOP)',           status: 'Minimum Tax' },
-    oil_tanker_co:    { filer: 0.04,  non_filer: 0.08,  section: 'Sec 153(1)(b) — Oil Tanker Contractor (Company)',           status: 'Minimum Tax' },
-    advertising:      { filer: 0.015, non_filer: 0.03,  section: 'Sec 153(1)(b) — Electronic & Print Media Ads',             status: 'Minimum Tax' },
-    other_company:    { filer: 0.15,  non_filer: 0.30,  section: 'Sec 153(1)(b) — Other Services (Company)',                  status: 'Minimum Tax' },
-    other_individual: { filer: 0.15,  non_filer: 0.30,  section: 'Sec 153(1)(b) — Other Services (Ind/AOP)',                  status: 'Minimum Tax' }
+    it_services:   { filer: 0.040, non_filer: 0.080, section: 'Sec 153(1)(b) — IT / IT-enabled Services',                           status: 'Minimum Tax' },
+    transport:     { filer: 0.060, non_filer: 0.120, section: 'Sec 153(1)(b) — Transport/Freight/Courier/Hotel/Security/Manpower', status: 'Minimum Tax' },
+    advertising:   { filer: 0.015, non_filer: 0.030, section: 'Sec 153(1)(b) — Electronic & Print Media Advertising',              status: 'Minimum Tax' },
+    other_services:{ filer: 0.150, non_filer: 0.300, section: 'Sec 153(1)(b) — Other Services',                                    status: 'Minimum Tax' }
   },
   // Sec 153(1)(c) — Contracts
   contract: {
-    company:    { filer: 0.075, non_filer: 0.15,  section: 'Sec 153(1)(c) — Execution of Contract (Company)',   status: 'Minimum Tax' },
-    individual: { filer: 0.08,  non_filer: 0.16,  section: 'Sec 153(1)(c) — Execution of Contract (Ind/AOP)',  status: 'Minimum Tax' },
-    sports:     { filer: 0.15,  non_filer: 0.30,  section: 'Sec 153(1)(c) — Sports Person Contract',           status: 'Minimum Tax' }
+    company:    { filer: 0.075, non_filer: 0.150, section: 'Sec 153(1)(c) — Execution of Contract (Company)',  status: 'Minimum Tax' },
+    individual: { filer: 0.080, non_filer: 0.160, section: 'Sec 153(1)(c) — Execution of Contract (Ind/AOP)', status: 'Minimum Tax' },
+    sports:     { filer: 0.150, non_filer: 0.300, section: 'Sec 153(1)(c) — Sports Person Contract',          status: 'Minimum Tax' }
   },
   // Sec 150 — Dividend
   dividend: {
-    general: { filer: 0.15,  non_filer: 0.30,  section: 'Sec 150 — Dividend (General)',                    status: 'Final Tax' },
-    ipp:     { filer: 0.075, non_filer: 0.15,  section: 'Sec 150 — Dividend (Independent Power Producer)', status: 'Final Tax' },
-    reit:    { filer: 0.15,  non_filer: 0.30,  section: 'Sec 150 — Dividend (REIT)',                       status: 'Final Tax' }
+    general:        { filer: 0.150, non_filer: 0.300, section: 'Sec 150 — Dividend (General / REIT)',                        status: 'Final Tax' },
+    ipp:            { filer: 0.075, non_filer: 0.150, section: 'Sec 150 — Dividend (Independent Power Producer)',             status: 'Final Tax' },
+    mutual_fund_debt:{ filer: 0.250, non_filer: 0.500, section: 'Sec 150 — Dividend (Mutual Fund ≥50% income from debt)',    status: 'Final Tax' },
+    company_no_tax: { filer: 0.250, non_filer: 0.500, section: 'Sec 150 — Dividend (Company — no tax due to exemption)',     status: 'Final Tax' },
+    spv_others:     { filer: 0.350, non_filer: 0.700, section: 'Sec 150 — Dividend from SPV (received by others)',           status: 'Final Tax' }
   },
   // Sec 148 — Imports
   imports: {
-    part1:             { filer: 0.01,  non_filer: 0.02,  section: 'Sec 148 — Imports Part I (Schedule XII)',          status: 'Minimum Tax' },
-    part2_industrial:  { filer: 0.02,  non_filer: 0.04,  section: 'Sec 148 — Imports Part II (Industrial, own use)',  status: 'Minimum Tax' },
-    part2_commercial:  { filer: 0.035, non_filer: 0.07,  section: 'Sec 148 — Imports Part II (Commercial importer)',  status: 'Minimum Tax' },
-    part3_industrial:  { filer: 0.055, non_filer: 0.11,  section: 'Sec 148 — Imports Part III (Industrial)',          status: 'Minimum Tax' },
-    part3_commercial:  { filer: 0.06,  non_filer: 0.12,  section: 'Sec 148 — Imports Part III (Commercial importer)', status: 'Minimum Tax' },
-    pharma:            { filer: 0.04,  non_filer: 0.08,  section: 'Sec 148 — Finished Pharma (not mfg in PK)',        status: 'Minimum Tax' }
+    part1:            { filer: 0.010, non_filer: 0.020, section: 'Sec 148 — Imports Part I Schedule XII (industrial raw materials)', status: 'Minimum Tax' },
+    part2_industrial: { filer: 0.020, non_filer: 0.040, section: 'Sec 148 — Imports Part II (Industrial, own use)',                  status: 'Minimum Tax' },
+    part2_commercial: { filer: 0.035, non_filer: 0.070, section: 'Sec 148 — Imports Part II (Commercial importer)',                  status: 'Minimum Tax' },
+    part3_industrial: { filer: 0.055, non_filer: 0.110, section: 'Sec 148 — Imports Part III (Industrial)',                          status: 'Minimum Tax' },
+    part3_commercial: { filer: 0.060, non_filer: 0.120, section: 'Sec 148 — Imports Part III (Commercial importer)',                 status: 'Minimum Tax' },
+    pharma:           { filer: 0.040, non_filer: 0.080, section: 'Sec 148 — Finished Pharmaceuticals (not mfg in PK)',               status: 'Minimum Tax' }
   },
-  // Sec 236C / 236K — Property
+  // Sec 236C / 236K — Property  *** FIXED: non-filer rates from FBR official ***
   property: {
-    sale_upto50:      { filer: 0.045, non_filer: 0.115, section: 'Sec 236C — Property Sale (up to Rs. 50M)',         status: 'Advance Tax' },
-    sale_50to100:     { filer: 0.05,  non_filer: 0.05,  section: 'Sec 236C — Property Sale (Rs. 50M to 100M)',       status: 'Advance Tax' },
-    sale_above100:    { filer: 0.055, non_filer: 0.055, section: 'Sec 236C — Property Sale (Above Rs. 100M)',        status: 'Advance Tax' },
-    purchase_upto50:  { filer: 0.015, non_filer: 0.105, section: 'Sec 236K — Property Purchase (up to Rs. 50M)',     status: 'Advance Tax' },
-    purchase_50to100: { filer: 0.02,  non_filer: 0.145, section: 'Sec 236K — Property Purchase (Rs. 50M to 100M)',  status: 'Advance Tax' },
-    purchase_above100:{ filer: 0.025, non_filer: 0.185, section: 'Sec 236K — Property Purchase (Above Rs. 100M)',   status: 'Advance Tax' }
+    sale_upto50:      { filer: 0.045, non_filer: 0.115, section: 'Sec 236C — Property Sale (up to Rs. 50M)',       status: 'Advance Tax' },
+    sale_50to100:     { filer: 0.050, non_filer: 0.115, section: 'Sec 236C — Property Sale (Rs. 50M to Rs. 100M)', status: 'Advance Tax' },
+    sale_above100:    { filer: 0.055, non_filer: 0.115, section: 'Sec 236C — Property Sale (Above Rs. 100M)',      status: 'Advance Tax' },
+    purchase_upto50:  { filer: 0.015, non_filer: 0.105, section: 'Sec 236K — Property Purchase (up to Rs. 50M)',       status: 'Advance Tax' },
+    purchase_50to100: { filer: 0.020, non_filer: 0.145, section: 'Sec 236K — Property Purchase (Rs. 50M to Rs. 100M)', status: 'Advance Tax' },
+    purchase_above100:{ filer: 0.025, non_filer: 0.185, section: 'Sec 236K — Property Purchase (Above Rs. 100M)',      status: 'Advance Tax' }
   },
   // Sec 155 — Rent: slabs handled in calculate()
   rent: { _special: true },
-  // Sec 151 — Profit on Debt / Interest: entity-aware
+  // Sec 151 / 151A — Profit on Debt & Gain on Securities
   interest: {
-    bank_deposit:  { ind: 0.20, co: 0.20, ind_nf: 0.40, co_nf: 0.40, section: 'Sec 151 — Profit on Debt (Bank Deposit/Account)', status: 'Final / Min >5M' },
-    nss:           { ind: 0.15, co: 0.20, ind_nf: 0.30, co_nf: 0.40, section: 'Sec 151 — NSS / Post Office Savings Account',      status: 'Adjustable' },
-    govt_security: { ind: 0.15, co: 0.20, ind_nf: 0.30, co_nf: 0.40, section: 'Sec 151 — Government Securities / T-Bills / PIBs', status: 'Final / Min >5M' },
-    other_debt:    { ind: 0.15, co: 0.15, ind_nf: 0.30, co_nf: 0.30, section: 'Sec 151 — Bonds / Debentures / Other Instruments',  status: 'Final / Min >5M' }
+    bank_deposit:     { filer: 0.200, non_filer: 0.400, section: 'Sec 151 — Profit on Debt (Bank Deposit / Account)',           status: 'Final Tax' },
+    govt_security:    { filer: 0.200, non_filer: 0.400, section: 'Sec 151 — Govt Securities / T-Bills (non-individual)',        status: 'Final Tax' },
+    nss:              { filer: 0.150, non_filer: 0.300, section: 'Sec 151 — NSS / Post Office / Other Profit on Debt',          status: 'Adjustable' },
+    sukuk_co:         { filer: 0.250, non_filer: 0.500, section: 'Sec 151 — Sukuk (sukuk-holder is Company)',                   status: 'Final Tax' },
+    sukuk_ind_high:   { filer: 0.125, non_filer: 0.250, section: 'Sec 151 — Sukuk (Ind/AOP, return > Rs. 1M)',                  status: 'Final Tax' },
+    sukuk_ind_low:    { filer: 0.100, non_filer: 0.200, section: 'Sec 151 — Sukuk (Ind/AOP, return ≤ Rs. 1M)',                  status: 'Final Tax' },
+    securities_gain:  { filer: 0.150, non_filer: 0.300, section: 'Sec 151A — Gain on Disposal of Debt Securities',              status: 'Final Tax' }
+  },
+  // Exports — Sec 154, 154A (Final Tax — filer/non-filer same for 154)
+  exports: {
+    export_fx:       { filer: 0.010, non_filer: 0.010, section: 'Sec 154 — Export Foreign Exchange Proceeds',          status: 'Final Tax' },
+    export_it_pseb:  { filer: 0.0025,non_filer: 0.005, section: 'Sec 154A — IT/SW Services (PSEB Registered)',         status: 'Final Tax' },
+    export_other:    { filer: 0.010, non_filer: 0.020, section: 'Sec 154A — Other Export Services',                    status: 'Final Tax' }
+  },
+  // Non-Residents — Sec 152
+  non_resident: {
+    royalty:          { filer: 0.150, non_filer: 0.150, section: 'Sec 152(1) — Royalty / Fee for Technical Services',    status: 'Final Tax' },
+    mgmt_fee:         { filer: 0.070, non_filer: 0.070, section: 'Sec 152(1A) — Management Fee',                         status: 'Final Tax' },
+    insurance:        { filer: 0.050, non_filer: 0.050, section: 'Sec 152(1AA) — Insurance / Reinsurance Premium',       status: 'Final Tax' },
+    nr_advertising:   { filer: 0.100, non_filer: 0.100, section: 'Sec 152(1AAA) — Advertisement Services',               status: 'Final Tax' },
+    nr_goods_co:      { filer: 0.050, non_filer: 0.100, section: 'Sec 152(2A)(a) — Goods (Company)',                     status: 'Final Tax' },
+    nr_goods_ind:     { filer: 0.055, non_filer: 0.110, section: 'Sec 152(2A)(a) — Goods (Individual/AOP)',              status: 'Final Tax' },
+    nr_it:            { filer: 0.040, non_filer: 0.080, section: 'Sec 152(2A)(b) — IT / IT-enabled Services',            status: 'Final Tax' },
+    nr_services:      { filer: 0.080, non_filer: 0.160, section: 'Sec 152(2A)(b) — Other Services',                      status: 'Final Tax' },
+    nr_contract_sports:{ filer: 0.150, non_filer: 0.300, section: 'Sec 152(2A)(c) — Contract (Sports Person)',           status: 'Final Tax' },
+    nr_contract_other: { filer: 0.080, non_filer: 0.160, section: 'Sec 152(2A)(c) — Contract (Other)',                   status: 'Final Tax' }
   },
   // Other sections
   other: {
-    cash_withdrawal: { filer: 0.00,  non_filer: 0.008, section: 'Sec 231AB — Cash Withdrawal (>Rs.50K/day)',           status: 'Advance Tax' },
-    brokerage:       { filer: 0.12,  non_filer: 0.24,  section: 'Sec 233 — Brokerage / Commission (General)',          status: 'Minimum Tax' },
-    brokerage_ins:   { filer: 0.08,  non_filer: 0.16,  section: 'Sec 233 — Life Insurance Commission (<Rs.500K p.a.)', status: 'Minimum Tax' },
-    brokerage_adv:   { filer: 0.10,  non_filer: 0.20,  section: 'Sec 233 — Advertising Agent Commission',             status: 'Minimum Tax' },
-    prize_bond:      { filer: 0.15,  non_filer: 0.30,  section: 'Sec 156 — Prize Bond / Crossword Puzzle',             status: 'Final Tax' },
-    prize_lottery:   { filer: 0.20,  non_filer: 0.40,  section: 'Sec 156 — Raffle / Lottery / Sales Promotion',        status: 'Final Tax' },
-    export:          { filer: 0.01,  non_filer: 0.02,  section: 'Sec 154 — Exports (Foreign Exchange Proceeds)',        status: 'Minimum Tax' },
-    electricity_comm:{ filer: null,  non_filer: null,   section: 'Sec 235 — Electricity (Commercial >Rs.20K bill)',     status: 'Advance Tax' }
+    // Exports
+    export:          { filer: 0.010, non_filer: 0.010, section: 'Sec 154 — Export Foreign Exchange Proceeds',           status: 'Final Tax' },
+    export_it_pseb:  { filer: 0.0025,non_filer: 0.005, section: 'Sec 154A — IT/SW Services PSEB Registered',           status: 'Final Tax' },
+    export_other:    { filer: 0.010, non_filer: 0.020, section: 'Sec 154A — Other Export Services',                     status: 'Final Tax' },
+    // Brokerage
+    brokerage:       { filer: 0.120, non_filer: 0.240, section: 'Sec 233 — Brokerage / Commission (General)',           status: 'Minimum Tax' },
+    brokerage_ins:   { filer: 0.080, non_filer: 0.160, section: 'Sec 233 — Life Insurance Commission (<Rs. 0.5M p.a.)',  status: 'Minimum Tax' },
+    brokerage_adv:   { filer: 0.100, non_filer: 0.200, section: 'Sec 233 — Advertising Agent Commission',               status: 'Minimum Tax' },
+    // Prizes & Petroleum
+    prize_bond:      { filer: 0.150, non_filer: 0.300, section: 'Sec 156 — Prize Bond / Crossword Puzzle',              status: 'Final Tax' },
+    prize_lottery:   { filer: 0.200, non_filer: 0.400, section: 'Sec 156 — Raffle / Lottery / Sales Promotion',         status: 'Final Tax' },
+    petroleum:       { filer: 0.120, non_filer: 0.240, section: 'Sec 156A — Sale of Petroleum Products',                status: 'Final Tax' },
+    // Telephone
+    telephone_mobile:{ filer: 0.150, non_filer: 0.150, section: 'Sec 236 — Mobile Phone / Prepaid Internet',            status: 'Advance Tax' },
+    telephone_landline:{ filer: null, non_filer: null,  section: 'Sec 236 — Landline Telephone (bill > Rs. 1,000)',      status: 'Advance Tax' },
+    // Electricity
+    electricity_comm:{ filer: null,  non_filer: null,   section: 'Sec 235 — Electricity (Commercial/Industrial)',        status: 'Advance Tax' },
+    // Advance taxes
+    cash_withdrawal: { filer: 0.000, non_filer: 0.008, section: 'Sec 231AB — Cash Withdrawal (> Rs. 50K/day)',          status: 'Advance Tax' },
+    public_auction:  { filer: 0.100, non_filer: 0.200, section: 'Sec 236A — Public Auction (Non-Property)',             status: 'Advance Tax' },
+    auction_property:{ filer: 0.050, non_filer: 0.100, section: 'Sec 236A — Public Auction (Immovable Property)',       status: 'Advance Tax' },
+    functions:       { filer: 0.100, non_filer: 0.200, section: 'Sec 236CB — Functions & Gatherings (Total Bill)',      status: 'Advance Tax' },
+    remittance:      { filer: 0.050, non_filer: 0.100, section: 'Sec 236Y — Amount Remitted Abroad via Card',           status: 'Advance Tax' },
+    bonus_shares:    { filer: 0.100, non_filer: 0.200, section: 'Sec 236Z — Bonus Shares Issued by Companies',         status: 'Final Tax' },
+    // Distributor / Retailer
+    dist_fertilizer: { filer: 0.0025,non_filer: 0.007, section: 'Sec 236G — Sales to Distributor (Fertilizers)',       status: 'Advance Tax' },
+    dist_other:      { filer: 0.001, non_filer: 0.020, section: 'Sec 236G — Sales to Distributor (Other)',             status: 'Advance Tax' },
+    retailer:        { filer: 0.005, non_filer: 0.025, section: 'Sec 236H — Sales to Retailers',                       status: 'Advance Tax' }
   }
 };
 
@@ -1950,37 +2041,71 @@ function calculate() {
     status = 'Advance Tax';
     ref = 'Section 155 · Income Tax Ordinance 2001 · FBR TY2026';
 
-  // ── INTEREST — Sec 151 ───────────────────────────────
+  // ── INTEREST / SECURITIES — Sec 151, 151A ───────────
   } else if (currentCat === 'interest') {
     gross = parseFloat(document.getElementById('interest-amount').value)||0;
     if (!gross) { showToast('Please enter profit/return amount.'); return; }
-    const iType  = document.getElementById('interest-type').value;
-    const iEntity = document.getElementById('interest-entity').value;
+    const iType = document.getElementById('interest-type').value;
     const filerStatus = document.getElementById('filer-status').value;
     const rd = RATES.interest[iType];
-    if (iEntity === 'company') {
-      rate = filerStatus === 'filer' ? rd.co : rd.co_nf;
-    } else {
-      rate = filerStatus === 'filer' ? rd.ind : rd.ind_nf;
-    }
+    if (!rd) { showToast('Rate data not found.'); return; }
+    rate = filerStatus === 'filer' ? rd.filer : rd.non_filer;
     wht = gross * rate;
     status = rd.status;
     ref = rd.section + ' · Finance Act 2025 · FBR TY2026';
 
-  // ── ELECTRICITY (special formula) ───────────────────
+  // ── EXPORTS — Sec 154, 154A ─────────────────────────
+  } else if (currentCat === 'exports') {
+    const expType = document.getElementById('exports-type').value;
+    gross = parseFloat(document.getElementById('exports-amount').value)||0;
+    if (!gross) { showToast('Please enter export amount.'); return; }
+    if (!expType) { showToast('Please select export type.'); return; }
+    const filerStatus = document.getElementById('filer-status').value;
+    const rd = RATES.exports[expType];
+    if (!rd) { showToast('Rate data not found.'); return; }
+    rate = filerStatus === 'filer' ? rd.filer : rd.non_filer;
+    wht = gross * rate;
+    status = rd.status;
+    ref = rd.section + ' · Finance Act 2025 · FBR TY2026';
+
+  // ── NON-RESIDENTS — Sec 152 ───────────────────────────
+  } else if (currentCat === 'non_resident') {
+    const nrType = document.getElementById('nr-type').value;
+    gross = parseFloat(document.getElementById('nr-amount').value)||0;
+    if (!gross) { showToast('Please enter payment amount.'); return; }
+    if (!nrType) { showToast('Please select payment category.'); return; }
+    const filerStatus = document.getElementById('filer-status').value;
+    const rd = RATES.non_resident[nrType];
+    if (!rd) { showToast('Rate data not found.'); return; }
+    rate = filerStatus === 'filer' ? rd.filer : rd.non_filer;
+    wht = gross * rate;
+    status = rd.status;
+    ref = rd.section + ' · Finance Act 2025 · FBR TY2026';
+
+  // ── ELECTRICITY & OTHER SPECIAL ──────────────────────
   } else if (currentCat === 'other') {
     const otherType = document.getElementById('other-type').value;
     gross = parseFloat(document.getElementById('other-amount').value)||0;
     if (!gross) { showToast('Please enter an amount.'); return; }
+    if (!otherType) { showToast('Please select a type.'); return; }
     const filerStatus = document.getElementById('filer-status').value;
     if (otherType === 'electricity_comm') {
-      if (gross <= 20000) { wht = gross * 0.10; }
-      else               { wht = 1950 + (gross - 20000) * 0.12; }
-      rate = wht / gross;
+      // Sec 235 — Commercial: tiered formula
+      if (gross <= 500)        { wht = 0; }
+      else if (gross <= 20000) { wht = gross * 0.10; }
+      else                     { wht = 1950 + (gross - 20000) * 0.12; }
+      rate = gross > 0 ? wht / gross : 0;
       status = 'Advance Tax';
-      ref = 'Sec 235 — Electricity (Commercial) · Finance Act 2025 · FBR TY2026';
+      ref = 'Sec 235 — Electricity (Commercial/Industrial) · Finance Act 2025 · FBR TY2026';
+    } else if (otherType === 'telephone_landline') {
+      // Sec 236 — Landline: 10% of amount exceeding Rs. 1,000
+      wht = gross <= 1000 ? 0 : (gross - 1000) * 0.10;
+      rate = gross > 0 ? wht / gross : 0;
+      status = 'Advance Tax';
+      ref = 'Sec 236 — Landline Telephone · Finance Act 2025 · FBR TY2026';
     } else {
       const rd = RATES.other[otherType];
+      if (!rd) { showToast('Rate data not found for this selection.'); return; }
       rate = filerStatus === 'filer' ? rd.filer : rd.non_filer;
       wht = gross * rate;
       status = rd.status;
@@ -1998,15 +2123,7 @@ function calculate() {
     if (!gross) { showToast('Please enter a payment amount.'); return; }
     if (!subtype) { showToast('Please select a sub-type.'); return; }
 
-    // For services: entity-aware types need key suffix (_co / _ind)
-    if (currentCat === 'services') {
-      const ENTITY_AWARE_SERVICES = ['it_services', 'transport', 'oil_tanker'];
-      if (ENTITY_AWARE_SERVICES.includes(subtype)) {
-        const entityEl = document.getElementById('services-entity');
-        const entity = entityEl ? entityEl.value : 'individual';
-        subtype = subtype + (entity === 'company' ? '_co' : '_ind');
-      }
-    }
+    // Services now use single FBR rate (no entity split)
 
     const rData = RATES[currentCat][subtype];
     if (!rData) { showToast('Rate data not found for this selection.'); return; }
@@ -2064,40 +2181,69 @@ function loadExample(cat, subtype, amount, filer) {
 }
 
 /* ── LEAD FORM ────────────────────────────────────────── */
-// To activate email capture: replace YOUR_FORMSPREE_ID below with your
-// Formspree form ID from https://formspree.io (free tier supports 50 submissions/month)
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+// ── LEAD FORM — Web3Forms ─────────────────────────────────
+// HOW TO ACTIVATE (2 minutes, free):
+//   1. Go to https://web3forms.com
+//   2. Enter your email address → click "Create Access Key"
+//   3. Paste your access key below, replacing YOUR_WEB3FORMS_KEY
+//   4. Save and re-upload the file — submissions arrive in your inbox instantly
+const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_KEY';
 
 async function submitLead() {
-  const email = document.getElementById('lead-email').value.trim();
-  const name  = document.getElementById('lead-name').value.trim();
-  if (!email || !email.includes('@')) {
+  const email     = document.getElementById('lead-email').value.trim();
+  const name      = document.getElementById('lead-name').value.trim();
+  const submitBtn = document.querySelector('.lead-submit');
+
+  // ── Validation ──────────────────────────────────────────
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     showToast('Please enter a valid email address.');
+    document.getElementById('lead-email').focus();
     return;
   }
 
-  const submitBtn = document.querySelector('.lead-submit');
-  if (submitBtn) { submitBtn.textContent = 'Sending…'; submitBtn.disabled = true; }
+  // ── Loading state ────────────────────────────────────────
+  if (submitBtn) {
+    submitBtn.textContent = 'Sending…';
+    submitBtn.disabled    = true;
+    submitBtn.style.opacity = '0.75';
+  }
 
-  // If Formspree ID is configured, POST to it; otherwise fall through to console
-  if (!FORMSPREE_ENDPOINT.includes('YOUR_FORMSPREE_ID')) {
+  // ── Submit ───────────────────────────────────────────────
+  if (WEB3FORMS_KEY !== 'YOUR_WEB3FORMS_KEY') {
     try {
-      const res = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ name, email, source: 'WHT Calculator', ts: new Date().toISOString() })
+        body: JSON.stringify({
+          access_key:  WEB3FORMS_KEY,
+          name:        name || '(not provided)',
+          email:       email,
+          subject:     'WHT Calculator — Free PDF Request',
+          message:     `New lead from Pakistan WHT Calculator\nName: ${name || '–'}\nEmail: ${email}\nTime: ${new Date().toLocaleString('en-PK', {timeZone:'Asia/Karachi'})}`,
+          from_name:   'WHT Calculator',
+          redirect:    'false'
+        })
       });
-      if (!res.ok) throw new Error('Submission failed');
+      const data = await res.json();
+      if (!res.ok || data.success === false) throw new Error(data.message || 'Submission failed');
     } catch (err) {
-      if (submitBtn) { submitBtn.textContent = 'Get Free PDF →'; submitBtn.disabled = false; }
-      showToast('Submission error — please try again.');
+      if (submitBtn) {
+        submitBtn.textContent = 'Send Me the PDF →';
+        submitBtn.disabled    = false;
+        submitBtn.style.opacity = '1';
+      }
+      showToast('⚠️ Submission failed — please try again or email directly.');
+      console.error('Web3Forms error:', err);
       return;
     }
   } else {
-    // Formspree not yet configured — log locally for development
-    console.log('Lead captured (Formspree not configured):', { name, email, ts: new Date().toISOString() });
+    // Key not configured yet — log to console so you can still test the UI
+    console.warn('Web3Forms key not set. To activate, replace YOUR_WEB3FORMS_KEY at web3forms.com');
+    console.log('Lead would have been submitted:', { name, email, ts: new Date().toISOString() });
+    // Still show success so you can preview the UX
   }
 
+  // ── Success state ────────────────────────────────────────
   document.getElementById('lead-form').style.display = 'none';
   document.getElementById('lead-success').classList.add('show');
   showToast('🎉 Check your inbox!');
