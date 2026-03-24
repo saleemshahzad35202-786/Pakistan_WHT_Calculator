@@ -2185,9 +2185,9 @@ function loadExample(cat, subtype, amount, filer) {
 // HOW TO ACTIVATE (2 minutes, free):
 //   1. Go to https://web3forms.com
 //   2. Enter your email address → click "Create Access Key"
-//   3. Paste your access key below, replacing YOUR_WEB3FORMS_KEY
+//   3. Paste your access key below, replacing 69144770-619f-4dc4-9a24-9a86148dd4de
 //   4. Save and re-upload the file — submissions arrive in your inbox instantly
-const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_KEY';
+const WEB3FORMS_KEY = '69144770-619f-4dc4-9a24-9a86148dd4de';
 
 async function submitLead() {
   const email     = document.getElementById('lead-email').value.trim();
@@ -2209,7 +2209,7 @@ async function submitLead() {
   }
 
   // ── Submit ───────────────────────────────────────────────
-  if (WEB3FORMS_KEY !== 'YOUR_WEB3FORMS_KEY') {
+  if (WEB3FORMS_KEY !== '69144770-619f-4dc4-9a24-9a86148dd4de') {
     try {
       const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -2238,7 +2238,7 @@ async function submitLead() {
     }
   } else {
     // Key not configured yet — log to console so you can still test the UI
-    console.warn('Web3Forms key not set. To activate, replace YOUR_WEB3FORMS_KEY at web3forms.com');
+    console.warn('Web3Forms key not set. To activate, replace 69144770-619f-4dc4-9a24-9a86148dd4de at web3forms.com');
     console.log('Lead would have been submitted:', { name, email, ts: new Date().toISOString() });
     // Still show success so you can preview the UX
   }
